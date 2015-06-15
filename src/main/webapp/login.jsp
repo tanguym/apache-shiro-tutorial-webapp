@@ -49,6 +49,8 @@
                                     </label>
                                 </div>
                                 <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                <br />
+                                <p><a class="btn btn-lg btn-success btn-block" href="forgottenpassword.jsp">Password forgotten</a></p>
                             </fieldset>
                         </form>
                     </div>
