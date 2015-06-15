@@ -1,8 +1,9 @@
-drop table shiro_permission;
-drop table shiro_permission_role;
-drop table shiro_role;
-drop table shiro_user;
-drop table shiro_user_role;
+drop table if exists shiro_permission;
+drop table if exists shiro_permission_role;
+drop table if exists shiro_role;
+drop table if exists shiro_user;
+drop table if exists shiro_user_role;
+drop table if exists shiro_configuration;
 
 create table shiro_user (
    id INT NOT NULL AUTO_INCREMENT,
@@ -34,4 +35,10 @@ create table shiro_permission_role (
    permission_id INT NOT NULL,
    role_id INT NOT NULL,
    PRIMARY KEY ( permission_id, role_id )
+);
+create table shiro_configuration (
+   id INT NOT NULL AUTO_INCREMENT,
+   parameter_key VARCHAR(255) NOT NULL,
+   parameter_value VARCHAR(255) NOT NULL,
+   PRIMARY KEY ( id )
 );
