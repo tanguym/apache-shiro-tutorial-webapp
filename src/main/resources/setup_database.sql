@@ -1,3 +1,9 @@
+drop table shiro_permission;
+drop table shiro_permission_role;
+drop table shiro_role;
+drop table shiro_user;
+drop table shiro_user_role;
+
 create table shiro_user (
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(40) NOT NULL,
@@ -28,36 +34,3 @@ create table shiro_permission_role (
    role_id INT NOT NULL,
    PRIMARY KEY ( permission_id, role_id )
 );
-
-
-insert into shiro_user (username, password) values ('user', 'pass');
-insert into shiro_role (name) values ('admin');
-insert into shiro_user_role (user_id, role_id) values (
-	(select id from shiro_user where username='user'),
-    (select id from shiro_role where name='admin')
-);
-insert into shiro_permission (name) values ('read');
-insert into shiro_permission_role (role_id, permission_id) values (
-    (select id from shiro_role where name='admin'),
-    (select id from shiro_permission where name='read')
-);
-
-insert into shiro_user (username, password) values ('guest', 'guest');
-insert into shiro_role (name) values ('reading');
-
-insert into shiro_user_role (user_id, role_id) values (
-	(select id from shiro_user where username='guest'),
-    (select id from shiro_role where name='reading')
-);
-insert into shiro_permission_role (role_id, permission_id) values (
-    (select id from shiro_role where name='reading'),
-    (select id from shiro_permission where name='read')
-);
-insert into shiro_user_role (user_id, role_id) values (
-    (select id from shiro_user where username='user'),
-    (select id from shiro_role where name='reading')
-);
-
-
-
-commit;
