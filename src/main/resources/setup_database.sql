@@ -8,6 +8,7 @@ create table shiro_user (
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(40) NOT NULL,
    password VARCHAR(256) NOT NULL,
+   last_password_change DATETIME default CURRENT_TIMESTAMP,
    PRIMARY KEY ( id )
 );
 create unique index i_user_name on shiro_user(username);
