@@ -60,18 +60,18 @@
     <h3>Roles you have:</h3>
 
     <p>
-        <shiro:hasRole name="Captains">Captains<br/></shiro:hasRole>
-        <shiro:hasRole name="Officers">Bad Guys<br/></shiro:hasRole>
-        <shiro:hasRole name="Enlisted">Enlisted<br/></shiro:hasRole>
+        <shiro:hasRole name="admin">admin<br/></shiro:hasRole>
+        <shiro:hasRole name="reading">reading<br/></shiro:hasRole>
     </p>
 
     <h3>Roles you DON'T have:</h3>
 
     <p>
-        <shiro:lacksRole name="Captains">Captains<br/></shiro:lacksRole>
-        <shiro:lacksRole name="Officers">Officers<br/></shiro:lacksRole>
-        <shiro:lacksRole name="Enlisted">Enlisted<br/></shiro:lacksRole>
+        <shiro:lacksRole name="admin">admin<br/></shiro:lacksRole>
+        <shiro:lacksRole name="reading">reading<br/></shiro:lacksRole>
     </p>
+
+    <shiro:hasPermission name="read">WOOT it works</shiro:hasPermission>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
