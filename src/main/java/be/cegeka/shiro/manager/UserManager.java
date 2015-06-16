@@ -2,11 +2,11 @@ package be.cegeka.shiro.manager;
 
 import be.cegeka.shiro.realm.JdbcCustomizedRealm;
 import be.cegeka.shiro.realm.RealmLocator;
-import be.cegeka.shiro.realm.RoleRepository;
 import be.cegeka.shiro.realm.UserRepository;
 import be.cegeka.shiro.transfer.User;
 import be.cegeka.shiro.validation.PasswordPolicyEnforcer;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 import java.util.ArrayList;
@@ -30,12 +30,28 @@ public class UserManager {
         }
     }
 
-    public static List<String> changePassword(String username, String newPassword) { //TODO change to 2 passwords
+    public static List<String> changePassword(String username, String newPassword) {
         SecurityUtils.getSubject().checkPermission("users:write");
         List<String> errors = PasswordPolicyEnforcer.validatePassword(newPassword, newPassword);
         if (errors.isEmpty()) {
             JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
             realm.updatePasswordWithoutValidation(username, newPassword);
+            return new ArrayList<>();
+        } else {
+            return errors;
+        }
+    }
+
+    public static List<String> changePassword(String username, String newPassword, String passwordVerification, String oldPassword) {
+        SecurityUtils.getSubject().checkPermission("users:write");
+        List<String> errors = PasswordPolicyEnforcer.validatePassword(newPassword, passwordVerification);
+        if (errors.isEmpty()) {
+            JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
+            try {
+                realm.updatePassword(new UsernamePasswordToken(username, oldPassword), newPassword);
+            } catch (AuthenticationException e) {
+                return Arrays.asList("error.invalid.password");
+            }
             return new ArrayList<>();
         } else {
             return errors;

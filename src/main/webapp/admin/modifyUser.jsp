@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <jsp:include page="messages.jsp"/>
+    <jsp:include page="../include/messages.jsp"/>
     <h1>Modify User</h1>
 
     <shiro:hasPermission name="users:write">

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<jsp:include page="messages.jsp"/>
+<jsp:include page="../include/messages.jsp"/>
 
 <a href="users.jsp">list users</a>
 <a href="modifyUser.jsp">modify user</a><br>

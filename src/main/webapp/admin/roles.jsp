@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<jsp:include page="messages.jsp"/>
+<jsp:include page="../include/messages.jsp"/>
 
 <%
     request.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
