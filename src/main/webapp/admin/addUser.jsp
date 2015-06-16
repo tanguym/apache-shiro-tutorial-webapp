@@ -14,15 +14,15 @@
 </head>
 <body>
     <jsp:include page="messages.jsp"/>
-    <h1>Modify User</h1>
+
+    <h1>Add User</h1>
 
     <shiro:hasPermission name="users:write">
-    <form action="userModification" method="POST">
+    <form action="userCreation" method="POST">
         <p>Username : <input type = "text" name="username"/></p>
         <p>Password : <input type = "password" name="password"/></p>
         <p style="width:200px;">
-            <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Update password"/>
-            <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Unlock account"/>
+            <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Create user"/>
         </p>
     </form>
     </shiro:hasPermission>

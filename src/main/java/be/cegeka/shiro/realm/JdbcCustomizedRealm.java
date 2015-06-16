@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +24,38 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         validationModules.add(new AccountLockoutModule());
     }
 
-    public void updatePassword(AuthenticationToken currentCredentials, String newPassword) throws AuthenticationException {
+    public void updatePassword(UsernamePasswordToken currentCredentials, String newPassword) throws AuthenticationException {
         AuthenticationInfo authenticationInfo = super.doGetAuthenticationInfo(currentCredentials);
         if (getCredentialsMatcher().doCredentialsMatch(currentCredentials, authenticationInfo)) {
-            String username = ((UsernamePasswordToken) currentCredentials).getUsername();
+            String username = currentCredentials.getUsername();
             updatePasswordWithoutValidation(username, newPassword);
         } else {
             throw new AuthenticationException("Current username and password don't match.");
         }
+    }
+
+    public void createUser(UsernamePasswordToken credentials) {
+        String encryptedNewPassword = ((PasswordMatcher) getCredentialsMatcher()).getPasswordService().encryptPassword(credentials.getPassword());
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("insert into shiro_user (username, password) values (?, ?)");
+            statement.setString(1, credentials.getUsername());
+            statement.setString(2, encryptedNewPassword);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            handleException(credentials.getUsername(), e);
+        }
+    }
+
+    public boolean userExists(String username) {
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("select count(*) from shiro_user where username= ?");
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next() && resultSet.getInt(1) > 0;
+        } catch (SQLException e) {
+            handleException(username, e);
+        }
+        return false;
     }
 
     public void updatePasswordWithoutValidation(String username, String password) {
@@ -79,7 +104,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
     }
 
     private void handleException(String username, SQLException e) {
-        final String message = "There was a SQL error while authenticating user [" + username + "]";
+        final String message = "There was a SQL error for user [" + username + "]";
         if (log.isErrorEnabled()) {
             log.error(message, e);
         }
