@@ -1,6 +1,7 @@
 package be.cegeka.shiro.realm;
 
 import be.cegeka.shiro.realm.validation.AccountLockoutModule;
+import be.cegeka.shiro.realm.validation.AuditLoggingModule;
 import be.cegeka.shiro.realm.validation.PasswordExpirationModule;
 import be.cegeka.shiro.realm.validation.ValidationModule;
 import org.apache.shiro.authc.*;
@@ -25,6 +26,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         super();
         addValidationModule(new PasswordExpirationModule());
         addValidationModule(new AccountLockoutModule());
+        addValidationModule(new AuditLoggingModule());
         super.setAuthenticationQuery("SELECT password FROM shiro_user WHERE username = ?");
         super.setPermissionsLookupEnabled(true);
         super.setUserRolesQuery("select r.name from shiro_role r join shiro_user_role ur on ur.role_id=r.id join shiro_user u on ur.user_id = u.id where u.username = ?");
