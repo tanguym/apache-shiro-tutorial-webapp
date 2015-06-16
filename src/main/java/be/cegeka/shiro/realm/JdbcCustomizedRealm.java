@@ -18,6 +18,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
     public JdbcCustomizedRealm() {
         super();
         validationModules.add(new PasswordExpirationModule());
+        validationModules.add(new AccountLockoutModule());
     }
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -25,19 +26,39 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         if (username == null) {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
+        validateModules(username);
+        AuthenticationInfo authenticationInfo = super.doGetAuthenticationInfo(token);
+        if (getCredentialsMatcher().doCredentialsMatch(token, authenticationInfo)) {
+            resetModules(username);
+        }
+        return authenticationInfo;
+    }
 
+    private void resetModules(String username) {
+        try (Connection conn = dataSource.getConnection()) {
+            for (ValidationModule validationModule : validationModules) {
+                validationModule.reset(username, conn);
+            }
+        } catch (SQLException e) {
+            handleException(username, e);
+        }
+    }
+
+    private void validateModules(String username) {
         try (Connection conn = dataSource.getConnection()) {
             for (ValidationModule validationModule : validationModules) {
                 validationModule.validate(username, conn);
             }
         } catch (SQLException e) {
-            final String message = "There was a SQL error while authenticating user [" + username + "]";
-            if (log.isErrorEnabled()) {
-                log.error(message, e);
-            }
-            throw new AuthenticationException(message, e);
+            handleException(username, e);
         }
+    }
 
-        return super.doGetAuthenticationInfo(token);
+    private void handleException(String username, SQLException e) {
+        final String message = "There was a SQL error while authenticating user [" + username + "]";
+        if (log.isErrorEnabled()) {
+            log.error(message, e);
+        }
+        throw new AuthenticationException(message, e);
     }
 }

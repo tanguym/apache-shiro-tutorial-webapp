@@ -22,4 +22,9 @@ public class PasswordExpirationModule implements ValidationModule {
             }
         }
     }
+
+    @Override
+    public void reset(String username, Connection connection) throws SQLException {
+        // do nothing
+    }
 }
