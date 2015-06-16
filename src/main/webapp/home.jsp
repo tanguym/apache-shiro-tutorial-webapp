@@ -54,25 +54,35 @@
     <p>Here are the roles you have and don't have. Log out and log back in under different user
         accounts to see different roles.</p>
 
-    <h3>Roles you have:</h3>
-
-    <p>
-        <shiro:hasRole name="admin">admin<br/></shiro:hasRole>
-        <shiro:hasRole name="reading">reading<br/></shiro:hasRole>
-    </p>
-
-    <h3>Roles you DON'T have:</h3>
-
-    <p>
     <%
         pageContext.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
     %>
+    <h3>Roles you have:</h3>
         <c:forEach items="${roles}" var="role">
-            <shiro:lacksRole name="${role.getName()}">${role.getName()}<br/></shiro:lacksRole>
+            <shiro:hasRole name="${role.getName()}"><p style="font-weight:bold;">${role.getName()}</p>
+                <div style="margin-left:20px;">
+                    <p>Permissions in this role : </p>
+                    <c:forEach items="${role.getPermissions()}" var="permission">
+                        <p>${permission.getName()}</p>
+                    </c:forEach>
+                </div>
+            </shiro:hasRole>
         </c:forEach>
-    </p>
 
-    <shiro:hasPermission name="read">WOOT it works</shiro:hasPermission>
+    <h3>Roles you DON'T have:</h3>
+
+    <c:forEach items="${roles}" var="role">
+        <shiro:lacksRole name="${role.getName()}"><p style="font-weight:bold;">${role.getName()}</p>
+            <div style="margin-left:20px;">
+                <p>Permissions in this role : </p>
+                <c:forEach items="${role.getPermissions()}" var="permission">
+                    <p>${permission.getName()}</p>
+                </c:forEach>
+            </div>
+        </shiro:lacksRole>
+    </c:forEach>
+
+    <shiro:hasPermission name="read">WOOT it works, since everyone has the read permission.</shiro:hasPermission>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
