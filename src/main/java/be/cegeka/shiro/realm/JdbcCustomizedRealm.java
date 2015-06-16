@@ -1,5 +1,6 @@
 package be.cegeka.shiro.realm;
 
+import be.cegeka.shiro.configuration.ShiroConfiguration;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.PasswordMatcher;
 import org.slf4j.Logger;
@@ -110,4 +111,24 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         }
         throw new AuthenticationException(message, e);
     }
+
+    public List<ShiroConfiguration> getShiroPasswordConfigurations() {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("select configuration_key, configuration_value from shiro_configuration where configuration_key like 'PASSWORD_%'");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<ShiroConfiguration> shiroConfigs = new ArrayList<>();
+            while (resultSet.next()) {
+                shiroConfigs.add(new ShiroConfiguration(resultSet.getString("configuration_key"), resultSet.getString("configuration_value")));
+            }
+            return shiroConfigs;
+
+        } catch (SQLException e) {
+            final String message = "There was a SQL error while retrieving shiro_password_configurations";
+            if (log.isErrorEnabled()) {
+                log.error(message, e);
+            }
+            throw new AuthenticationException(message, e);
+        }
+    }
+
 }
