@@ -34,4 +34,8 @@ public class User {
     public boolean needsPasswordChange() {
         return PasswordExpirationModule.isPasswordExpired(getLastPasswordChange());
     }
+
+    public String getRolesForGui() {
+        return "";
+    }
 }

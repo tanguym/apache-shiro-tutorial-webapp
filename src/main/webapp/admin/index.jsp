@@ -8,6 +8,7 @@
 
 <jsp:include page="messages.jsp"/>
 
+<a href="users.jsp">list users</a>
 <a href="modifyUser.jsp">modify user</a><br>
 <a href="addUser.jsp">add user</a>
 

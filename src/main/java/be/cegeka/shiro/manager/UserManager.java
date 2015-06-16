@@ -2,6 +2,7 @@ package be.cegeka.shiro.manager;
 
 import be.cegeka.shiro.realm.JdbcCustomizedRealm;
 import be.cegeka.shiro.realm.RealmLocator;
+import be.cegeka.shiro.realm.UserRepository;
 import be.cegeka.shiro.transfer.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -38,7 +39,6 @@ public class UserManager {
 
     public static List<User> getUsers() {
         SecurityUtils.getSubject().checkPermission("users:read");
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        return realm.getUsers();
+        return UserRepository.getUsers();
     }
 }

@@ -1,13 +1,12 @@
 package be.cegeka.shiro.realm;
 
 import be.cegeka.shiro.configuration.ShiroConfiguration;
-import be.cegeka.shiro.transfer.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.PasswordMatcher;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -152,20 +151,8 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         }
     }
 
-    public List<User> getUsers() {
-        ArrayList<User> result = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection()) {
-            ResultSet resultSet = connection.prepareStatement("select username, last_password_change, invalid_login_attempts from shiro_user").executeQuery();
-            while (resultSet.next()) {
-                String username = resultSet.getString("username");
-                DateTime lastChange = new DateTime(resultSet.getDate("last_password_change"));
-                int attempts = resultSet.getInt("invalid_login_attempts");
-                result.add(new User(username, attempts, lastChange));
-            }
-        } catch (SQLException e) {
-            handleException("all_users", e);
-        }
-        return result;
+    protected DataSource getDataSource() {
+        return dataSource;
     }
 
 }
