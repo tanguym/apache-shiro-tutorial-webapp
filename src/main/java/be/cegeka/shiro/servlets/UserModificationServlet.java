@@ -24,7 +24,9 @@ public class UserModificationServlet extends HttpServlet {
             realm.updatePasswordWithoutValidation(request.getParameter("username"), request.getParameter("password"));
         } else if ("Unlock account".equals(request.getParameter("action"))) {
             realm.resetModuleLocks(request.getParameter("username"));
+        } else {
+            response.sendRedirect("modifyUser.jsp");
         }
-        //TODO redirect
+        response.sendRedirect("index.jsp");
     }
 }
