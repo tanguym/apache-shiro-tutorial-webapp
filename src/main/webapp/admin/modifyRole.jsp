@@ -16,7 +16,8 @@
     <jsp:include page="../include/messages.jsp"/>
     <% pageContext.setAttribute("role", be.cegeka.shiro.manager.RoleManager.getRole(request.getParameter("role"))); %>
 
-    <h1>Modify User</h1>
+    <p><a href="roles.jsp">Return to roles</a></p>
+    <h1>Modify Roles</h1>
 
     <shiro:hasPermission name="roles:write">
     <p>Role : <c:out value="${role.getName()}"/></p>

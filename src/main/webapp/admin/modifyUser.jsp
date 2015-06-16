@@ -16,6 +16,7 @@
     <jsp:include page="../include/messages.jsp"/>
     <% pageContext.setAttribute("user", be.cegeka.shiro.manager.UserManager.getUser(request.getParameter("user"))); %>
 
+    <p><a href="users.jsp">Return to users</a></p>
     <h1>Modify User</h1>
 
     <shiro:hasPermission name="users:write">

@@ -23,10 +23,12 @@
 
     <p>Enter your current password and new password below to change your password.</p>
     <form action="/account/ChangeMyPassword" method="POST">
-        <p>Your current password : <input type = "password" name="old_password"/></p>
-        <p>New password : <input type = "password" name="password"/></p>
-        <p>Re-enter your new password : <input type = "password" name="confirm_password"/></p>
-        <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" value="Send!"/></p>
+    <table>
+        <tr><th style="font-weight:normal;">Your current password : </th><th><input type = "password" name="old_password"/></th></tr>
+        <tr><td>New password : </td><td><input type = "password" name="password"/></td></tr>
+        <tr><td>Re-enter your new password : </td><td><input type = "password" name="confirm_password"/></td></tr>
+    </table>
+        <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" value="Change password"/></p>
     </form>
 
     <p><c:out value="${error}"/></p>
