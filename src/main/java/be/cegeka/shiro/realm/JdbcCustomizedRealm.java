@@ -23,6 +23,10 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         super();
         validationModules.add(new PasswordExpirationModule());
         validationModules.add(new AccountLockoutModule());
+        super.setAuthenticationQuery("SELECT password FROM shiro_user WHERE username = ?");
+        super.setPermissionsLookupEnabled(true);
+        super.setUserRolesQuery("select r.name from shiro_role r join shiro_user_role ur on ur.role_id=r.id join shiro_user u on ur.user_id = u.id where u.username = ?");
+        super.setPermissionsQuery("select p.name from shiro_permission p join shiro_permission_role rp on rp.permission_id=p.id join shiro_role r on r.id = rp.role_id where r.name=?");
     }
 
     public void updatePassword(UsernamePasswordToken currentCredentials, String newPassword) throws AuthenticationException {
@@ -110,6 +114,21 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
             log.error(message, e);
         }
         throw new AuthenticationException(message, e);
+    }
+
+    @Override
+    public void setAuthenticationQuery(String authenticationQuery) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setUserRolesQuery(String userRolesQuery) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setPermissionsQuery(String permissionsQuery) {
+        throw new UnsupportedOperationException();
     }
 
     public List<ShiroConfiguration> getShiroPasswordConfigurations() {
