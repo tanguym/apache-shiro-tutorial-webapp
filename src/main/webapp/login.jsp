@@ -22,9 +22,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="static/css/style.css">
-    <style>
-        body{padding-top:20px;}
-    </style>
 </head>
 <body>
     <jsp:include page="include/messages.jsp"/>

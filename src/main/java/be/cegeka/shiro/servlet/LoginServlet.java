@@ -16,6 +16,9 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
+    public static final String NO_ACCOUNT_FOUND_FOR_USER_EXCEPTION = "No account found for user";
+    public static final String PASSWORD_WRONG_EXCEPTION = "Submitted credentials for token";
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AuthenticationToken token = new UsernamePasswordToken(request.getParameter("username"), request.getParameter("password"));
         try {
@@ -24,7 +27,10 @@ public class LoginServlet extends HttpServlet {
             if (PasswordExpirationModule.ERROR_PASSWORD_EXPIRED.equals(e.getMessage())) {
                 response.sendRedirect("passwordExpired.jsp");
             } else {
-                response.sendRedirect("login.jsp?error=" + e.getMessage());
+                if (e.getMessage().contains(NO_ACCOUNT_FOUND_FOR_USER_EXCEPTION)
+                        || e.getMessage().contains(PASSWORD_WRONG_EXCEPTION)) {
+                    response.sendRedirect("login.jsp?error=user.password.wrong");
+                }
             }
         }
         response.sendRedirect("home.jsp");
