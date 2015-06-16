@@ -1,5 +1,7 @@
 package be.cegeka.shiro.transfer;
 
+import org.apache.shiro.util.StringUtils;
+
 import java.util.List;
 
 public class Role {
@@ -37,11 +39,6 @@ public class Role {
     }
 
     public String getPermissionsForGUI() {
-        StringBuilder builder = new StringBuilder();
-        for (Permission permission : permissions) {
-            builder.append(permission.toString() + ", ");
-        }
-        String buildedString = builder.toString();
-        return buildedString.substring(0, buildedString.length()-2);
+        return StringUtils.join(permissions.iterator(), ", ");
     }
 }
