@@ -32,7 +32,7 @@
                     <c:forEach items="${roleItem.getPermissions()}" var="permissionItem">
                         ${permissionItem.getName()}
                     </c:forEach>
-                </td><td><a href="modifyRole.jsp?role=${roleItem.getName()}">Modify role</a></td></tr>
+                </td><td><a href="modifyRole.jsp?role=${roleItem.getName()}">Modify role</a><a href="roleDeletion?name=${roleItem.getName()}">Delete role</a></td></tr>
             </c:forEach>
     </table>
 

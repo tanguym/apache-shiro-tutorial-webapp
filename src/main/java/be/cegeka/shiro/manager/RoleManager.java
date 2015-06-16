@@ -49,4 +49,9 @@ public class RoleManager {
         SecurityUtils.getSubject().checkPermission("roles:write");
         RoleRepository.updatePermissionsForRole(role, assignedPermissions);
     }
+
+    public static void deleteRole(String name) {
+        SecurityUtils.getSubject().checkPermission("roles:write");
+        RoleRepository.deleteRole(name);
+    }
 }

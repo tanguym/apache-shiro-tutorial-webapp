@@ -84,4 +84,22 @@ public class RoleRepository {
     private static JdbcCustomizedRealm getRealm() {
         return RealmLocator.locate(JdbcCustomizedRealm.class);
     }
+
+    public static void deleteRole(String name) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("delete from shiro_user_role where role_id = (select id from shiro_role where name = ?)");
+            statement.setString(1, name);
+            statement.executeUpdate();
+
+            statement = conn.prepareStatement("delete from shiro_permission_role where role_id = (select id from shiro_role where name = ?)");
+            statement.setString(1, name);
+            statement.executeUpdate();
+
+            statement = conn.prepareStatement("delete from shiro_role where name = ?");
+            statement.setString(1, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
