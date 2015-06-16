@@ -25,7 +25,7 @@
 </head>
 <body>
     <jsp:include page="include/messages.jsp"/>
-    <div class="container">
+    <div class="container" style="margin-top:50px;">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
@@ -41,7 +41,7 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                <input class="btn btn-lg btn-success btn-block" style="margin:0;" type="submit" value="Login">
                             </fieldset>
                         </form>
                     </div>
