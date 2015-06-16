@@ -12,23 +12,31 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
 
 
     private static final Logger log = LoggerFactory.getLogger(JdbcCustomizedRealm.class);
-    private List<ValidationModule> validationModules = new ArrayList<>();
+    private Map<String, ValidationModule> validationModules = new HashMap<>();
 
     public JdbcCustomizedRealm() {
         super();
-        validationModules.add(new PasswordExpirationModule());
-        validationModules.add(new AccountLockoutModule());
+        addValidationModule(new PasswordExpirationModule());
+        addValidationModule(new AccountLockoutModule());
         super.setAuthenticationQuery("SELECT password FROM shiro_user WHERE username = ?");
         super.setPermissionsLookupEnabled(true);
         super.setUserRolesQuery("select r.name from shiro_role r join shiro_user_role ur on ur.role_id=r.id join shiro_user u on ur.user_id = u.id where u.username = ?");
         super.setPermissionsQuery("select p.name from shiro_permission p join shiro_permission_role rp on rp.permission_id=p.id join shiro_role r on r.id = rp.role_id where r.name=?");
+    }
+
+    public void addValidationModule(ValidationModule module) {
+        validationModules.put(module.getName(), module);
+    }
+
+    public void removeValidationModule(String name) {
+        validationModules.remove(name);
     }
 
     public void updatePassword(UsernamePasswordToken currentCredentials, String newPassword) throws AuthenticationException {
@@ -80,7 +88,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
 
     public void resetModuleLocks(String username) {
         try (Connection conn = dataSource.getConnection()) {
-            for (ValidationModule validationModule : validationModules) {
+            for (ValidationModule validationModule : validationModules.values()) {
                 validationModule.reset(username, conn);
             }
         } catch (SQLException e) {
@@ -90,7 +98,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
 
     private void validateModules(String username) {
         try (Connection conn = dataSource.getConnection()) {
-            for (ValidationModule validationModule : validationModules) {
+            for (ValidationModule validationModule : validationModules.values()) {
                 validationModule.validate(username, conn);
             }
         } catch (SQLException e) {

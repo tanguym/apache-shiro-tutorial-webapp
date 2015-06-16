@@ -18,9 +18,6 @@
 <head>
     <title>Apache Shiro Tutorial Webapp : Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Add some nice styling and functionality.  We'll just use Twitter Bootstrap -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="static/css/style.css">
     <style>
         body{padding-top:20px;}
@@ -36,15 +33,21 @@
                         <h3 class="panel-title">Please sign in</h3>
                     </div>
                     <div class="panel-body">
-                        <form name="loginform" action="/login" method="POST" accept-charset="UTF-8" role="form">
+                        <form name="loginform" action="/passwordExpired" method="POST" accept-charset="UTF-8" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Username or Email" name="username" type="text">
+                                    <input class="form-control" placeholder="Username" name="username" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Old Password" name="old_password" type="password" value="">
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="New Password" name="password" type="password" value="">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Repeat Password" name="confirm_password" type="password" value="">
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Change Password">
                             </fieldset>
                         </form>
                     </div>
@@ -52,7 +55,6 @@
             </div>
         </div>
     </div>
-
 
 </body>
 </html>
