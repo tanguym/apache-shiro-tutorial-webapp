@@ -87,4 +87,9 @@ public class UserManager {
         SecurityUtils.getSubject().checkPermission("users:write");
         UserRepository.updateRolesForUser(username, assignedRoles);
     }
+
+    public static void deleteUser(String username) {
+        SecurityUtils.getSubject().checkPermission("users:write");
+        UserRepository.deleteUser(username);
+    }
 }

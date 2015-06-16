@@ -75,4 +75,18 @@ public class UserRepository {
             throw new IllegalStateException(e);
         }
     }
+
+    public static void deleteUser(String username) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("delete from shiro_user_role where user_id = (select id from shiro_user where username = ?)");
+            statement.setString(1, username);
+            statement.executeUpdate();
+
+            statement = conn.prepareStatement("delete from shiro_user where username = ?");
+            statement.setString(1, username);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

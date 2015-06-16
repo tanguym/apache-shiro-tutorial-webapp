@@ -24,7 +24,7 @@
         <c:forEach items="${users}" var="user">
             <tr><td>${user.getUsername()}</td><td>${user.isAccountLocked()}</td><td>${user.needsPasswordChange()}</td><td>
                 <c:forEach items="${user.getRoles()}" var="role">${role.getName()} </c:forEach>
-            </td><td><a href="modifyUser.jsp?user=${user.getUsername()}">modify user</a><br><a href="userDeletion?user=${user.getUsername()}">delete user</a><br></td></tr>
+            </td><td><a href="modifyUser.jsp?user=${user.getUsername()}">modify user</a><br><a href="userDeletion?username=${user.getUsername()}">delete user</a><br></td></tr>
         </c:forEach>
         </table>
 <p><a class="btn btn-lg btn-success btn-block" href="addUser.jsp">add user</a></p>
