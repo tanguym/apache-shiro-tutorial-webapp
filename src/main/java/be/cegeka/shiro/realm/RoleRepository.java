@@ -15,8 +15,7 @@ public class RoleRepository {
 
     public static List<Role> getRoles() {
         List<Role> result = new ArrayList<>();
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        try (Connection connection = realm.getDataSource().getConnection()) {
+        try (Connection connection = getRealm().getDataSource().getConnection()) {
             ResultSet resultSet = connection.prepareStatement("select name from shiro_role").executeQuery();
             while (resultSet.next()) {
                 result.add(new Role(resultSet.getString("name")));
@@ -28,8 +27,7 @@ public class RoleRepository {
     }
 
     public static boolean roleExists(String role) {
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        try (Connection conn = realm.getDataSource().getConnection()) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
             PreparedStatement statement = conn.prepareStatement("select count(*) from shiro_role where name= ?");
             statement.setString(1, role);
             ResultSet resultSet = statement.executeQuery();
@@ -40,8 +38,7 @@ public class RoleRepository {
     }
 
     public static void createRole(String role) {
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        try (Connection conn = realm.getDataSource().getConnection()) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
             PreparedStatement statement = conn.prepareStatement("insert into shiro_role (name) values (?)");
             statement.setString(1, role);
             statement.executeUpdate();
@@ -53,8 +50,7 @@ public class RoleRepository {
     public static List<Role> getRolesForUser(User user) {
         List<Role> roles = new ArrayList<>();
 
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        try (Connection conn = realm.getDataSource().getConnection()) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
             PreparedStatement statement = conn.prepareStatement("select r.name from shiro_user u join shiro_user_role ur on u.id = ur.user_id join shiro_role r on r.id = ur.role_id where u.username = ?");
             statement.setString(1, user.getUsername());
             ResultSet resultSet = statement.executeQuery();
@@ -66,5 +62,26 @@ public class RoleRepository {
         }
 
         return roles;
+    }
+
+    public static void updatePermissionsForRole(String role, String[] assignedPermissions) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("delete from shiro_permission_role where role_id = (select id from shiro_role where name = ?)");
+            statement.setString(1, role);
+            statement.executeUpdate();
+
+            for (String assignedPermission : assignedPermissions) {
+                statement = conn.prepareStatement("insert into shiro_permission_role (permission_id, role_id) select p.id permission_id, r.id role_id from shiro_permission p, shiro_role r where p.name=? and r.name =?");
+                statement.setString(1, assignedPermission);
+                statement.setString(2, role);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static JdbcCustomizedRealm getRealm() {
+        return RealmLocator.locate(JdbcCustomizedRealm.class);
     }
 }

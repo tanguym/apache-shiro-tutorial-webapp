@@ -14,18 +14,20 @@
 </head>
 <body>
     <jsp:include page="../include/messages.jsp"/>
+    <p><a href="/admin">Return to admin-page</a></p>
     <h1>Users</h1>
 
     <shiro:hasPermission name="users:read">
         <table>
-        <tr><th>User</th><th>Locked</th><th>Expired</th><th>Roles</th></tr>
+        <tr><th>User</th><th>Locked</th><th>Expired</th><th>Roles</th><th>Actions</th></tr>
         <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
         <c:forEach items="${users}" var="user">
             <tr><td>${user.getUsername()}</td><td>${user.isAccountLocked()}</td><td>${user.needsPasswordChange()}</td><td>
                 <c:forEach items="${user.getRoles()}" var="role">${role.getName()} </c:forEach>
-            </td></tr>
+            </td><td><a href="modifyUser.jsp?user=${user.getUsername()}">modify user</a><br><a href="userDeletion?user=${user.getUsername()}">delete user</a><br></td></tr>
         </c:forEach>
         </table>
+<p><a class="btn btn-lg btn-success btn-block" href="addUser.jsp">add user</a></p>
     </shiro:hasPermission>
     <shiro:lacksPermission name="users:read">
         You are not allowed to read users.

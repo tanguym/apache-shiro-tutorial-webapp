@@ -14,7 +14,7 @@
 </head>
 <body>
     <jsp:include page="../include/messages.jsp"/>
-
+<p><a href="/admin/users.jsp">Return to users</a></p>
     <h1>Add User</h1>
 
     <shiro:hasPermission name="users:write">

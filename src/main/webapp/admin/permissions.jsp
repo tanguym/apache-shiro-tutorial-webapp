@@ -21,6 +21,7 @@
     request.setAttribute("permissions", be.cegeka.shiro.manager.PermissionManager.getPermissions());
 %>
 
+    <p><a href="/admin">Return to admin-page</a></p>
 <h1>Permissions</h1>
     <shiro:hasPermission name="permissions:read">
     <table>
@@ -34,7 +35,7 @@
         You are not allowed to read permissions.
     </shiro:lacksPermission>
 
-<a href="addPermission.jsp">add permission</a><br>
+<p><a class="btn btn-lg btn-success btn-block" href="addPermission.jsp">add permission</a></p>
 
 </body>
 </html>

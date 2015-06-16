@@ -25,14 +25,14 @@
 <h1>Roles</h1>
     <shiro:hasPermission name="roles:read">
     <table>
-        <tr><th>Role</th><th>Permissions</th></tr>
+        <tr><th>Role</th><th>Permissions</th><th>Actions</th></tr>
             <c:forEach items="${roles}" var="roleItem">
                 <tr><td><c:out value="${roleItem.getName()}"/></td>
                 <td>
                     <c:forEach items="${roleItem.getPermissions()}" var="permissionItem">
                         ${permissionItem.getName()}
                     </c:forEach>
-                </td></tr>
+                </td><td><a href="modifyRole.jsp?role=${roleItem.getName()}">Modify role</a></td></tr>
             </c:forEach>
     </table>
 

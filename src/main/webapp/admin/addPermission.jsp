@@ -15,7 +15,8 @@
 <body>
     <jsp:include page="../include/messages.jsp"/>
 
-    <h1>Add Role</h1>
+    <p><a href="/admin/permissions.jsp">Return to permissions</a></p>
+    <h1>Add Permission</h1>
 
     <shiro:hasPermission name="permissions:write">
     <form action="permissionCreation" method="POST">

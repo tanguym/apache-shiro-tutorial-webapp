@@ -14,7 +14,7 @@
 </head>
 <body>
     <jsp:include page="../include/messages.jsp"/>
-
+<p><a href="/admin/roles.jsp">Return to roles</a></p>
     <h1>Add Role</h1>
 
     <shiro:hasPermission name="roles:write">
