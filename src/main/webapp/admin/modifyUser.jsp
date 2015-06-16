@@ -14,23 +14,27 @@
 </head>
 <body>
     <jsp:include page="../include/messages.jsp"/>
+    <% pageContext.setAttribute("user", be.cegeka.shiro.manager.UserManager.getUser(request.getParameter("user"))); %>
+
     <h1>Modify User</h1>
 
     <shiro:hasPermission name="users:write">
     <form action="userModification" method="POST">
-        <p>Username :
-        <select name="item">
-        <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
-        <c:forEach items="${users}" var="user">
-            <option value="${user.getUsername()}">${user.getUsername()}</option>
-        </c:forEach>
-        </select>
-        </p>
+        <p>Username : <c:out value="${user.getUsername()}"/></p>
         <p>Password : <input type = "password" name="password"/></p>
         <p style="width:200px;">
             <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Update password"/>
             <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Unlock account"/>
         </p>
+    </form>
+    <form action="userRoleModification" method="POST">
+    <p>Rollen</p>
+        <% request.setAttribute("roles",be.cegeka.shiro.manager.RoleManager.getRoles()); %>
+        <c:forEach items="${roles}" var="role">
+            <p><input type="checkbox" <c:if test="${user.getRoles().contains(role)}">checked </c:if>  name="assignedRoles" value="${role.getName()}"/> ${role.getName()}</p>
+        </c:forEach>
+        <input type="hidden" value="${user.getUsername()}" name="username"/>
+        <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" value="update roles"/></p>
     </form>
     </shiro:hasPermission>
     <shiro:lacksPermission name="users:write">
