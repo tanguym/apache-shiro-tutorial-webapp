@@ -5,7 +5,7 @@ truncate shiro_user;
 truncate shiro_user_role;
 truncate shiro_configuration;
 
-insert into shiro_user (username, password) values ('user', 'pass');
+insert into shiro_user (username, password) values ('user', '$shiro1$SHA-256$1000$9Fm5pLxx0HKsBy8E4yREVA==$9/edfVtTZtHzA59fZEWL6FfkTJnRObv2e958DbfDAZs='); -- password = pass
 insert into shiro_role (name) values ('admin');
 insert into shiro_user_role (user_id, role_id) values (
 	(select id from shiro_user where username='user'),
@@ -17,7 +17,7 @@ insert into shiro_permission_role (role_id, permission_id) values (
     (select id from shiro_permission where name='read')
 );
 
-insert into shiro_user (username, password) values ('guest', 'guest');
+insert into shiro_user (username, password) values ('guest', '$shiro1$SHA-256$1000$NsTSjKXaRNY7fH4eO5/Jpg==$jSkHapx1HWcOSTr8CFWSwvGqP2jo8P+LhhNU938a7cg='); -- password = guest
 insert into shiro_role (name) values ('reading');
 
 insert into shiro_user_role (user_id, role_id) values (

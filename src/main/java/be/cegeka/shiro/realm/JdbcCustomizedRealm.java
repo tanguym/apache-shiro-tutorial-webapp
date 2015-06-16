@@ -1,10 +1,12 @@
 package be.cegeka.shiro.realm;
 
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.PasswordMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,24 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         super();
         validationModules.add(new PasswordExpirationModule());
         validationModules.add(new AccountLockoutModule());
+    }
+
+    public void updatePassword(AuthenticationToken currentCredentials, String newPassword) throws AuthenticationException {
+        AuthenticationInfo authenticationInfo = super.doGetAuthenticationInfo(currentCredentials);
+        if (getCredentialsMatcher().doCredentialsMatch(currentCredentials, authenticationInfo)) {
+            String username = ((UsernamePasswordToken) currentCredentials).getUsername();
+            String encryptedNewPassword = ((PasswordMatcher) getCredentialsMatcher()).getPasswordService().encryptPassword(newPassword);
+            try (Connection conn = dataSource.getConnection()) {
+                PreparedStatement statement = conn.prepareStatement("update shiro_user set password = ? where username = ?");
+                statement.setString(1, encryptedNewPassword);
+                statement.setString(2, username);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                handleException(username, e);
+            }
+        } else {
+            throw new AuthenticationException("Current username and password don't match.");
+        }
     }
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
