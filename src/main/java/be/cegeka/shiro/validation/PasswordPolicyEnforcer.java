@@ -1,8 +1,7 @@
 package be.cegeka.shiro.validation;
 
 import be.cegeka.shiro.configuration.ShiroConfiguration;
-import be.cegeka.shiro.realm.JdbcCustomizedRealm;
-import be.cegeka.shiro.realm.RealmLocator;
+import be.cegeka.shiro.realm.ShiroConfigurationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,10 +96,7 @@ public class PasswordPolicyEnforcer {
 
     private static void initPasswordConfigurationsIfNeeded() {
         if (passwordConfigurations == null) {
-            JdbcCustomizedRealm jdbcCustomizedRealm = RealmLocator.locate(JdbcCustomizedRealm.class);
-            if (jdbcCustomizedRealm != null) {
-                passwordConfigurations =  jdbcCustomizedRealm.getShiroPasswordConfigurations();
-            }
+            passwordConfigurations =  ShiroConfigurationRepository.getShiroPasswordConfigurations();
         }
     }
 

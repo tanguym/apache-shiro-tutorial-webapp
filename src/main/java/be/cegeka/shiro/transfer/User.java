@@ -1,7 +1,7 @@
 package be.cegeka.shiro.transfer;
 
-import be.cegeka.shiro.realm.AccountLockoutModule;
-import be.cegeka.shiro.realm.PasswordExpirationModule;
+import be.cegeka.shiro.realm.validation.AccountLockoutModule;
+import be.cegeka.shiro.realm.validation.PasswordExpirationModule;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class User {
         return PasswordExpirationModule.isPasswordExpired(getLastPasswordChange());
     }
 
-    public List<Role> getRolesForGui() {
+    public List<Role> getRoles() {
         return roles;
     }
 

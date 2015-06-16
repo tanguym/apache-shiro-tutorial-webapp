@@ -1,4 +1,4 @@
-package be.cegeka.shiro.realm;
+package be.cegeka.shiro.realm.validation;
 
 import be.cegeka.shiro.transfer.User;
 import org.apache.shiro.authc.AuthenticationException;
