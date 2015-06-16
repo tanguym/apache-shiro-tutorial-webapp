@@ -51,15 +51,17 @@
     </shiro:hasPermission>
 
     <h2>What did we add to Shiro?</h2>
-    database schema<br>
-    user, role en permission management for admins<br>
-    change password functionality<br>
-    account lockout on too many logins<br>
-    audit loging on login<br>
-    session timeout (configuration)<br>
-    password encryption (configuration)<br>
-    password expiration<br>
-    password policies<br>
+    <ul>
+    <li>Database schema</li>
+    <li>User, role en permission management for admins</li>
+    <li>Change password functionality</li>
+    <li>Account lockout on too many login-attempts</li>
+    <li>Audit logging on login</li>
+    <li>Session timeout (configuration)</li>
+    <li>Password encryption (configuration)</li>
+    <li>Password expiration</li>
+    <li>Password policies</li>
+    </ul>
 
     <h2>Roles</h2>
 
