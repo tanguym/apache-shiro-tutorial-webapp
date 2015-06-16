@@ -16,6 +16,11 @@ insert into shiro_permission_role (role_id, permission_id) values (
     (select id from shiro_role where name='admin'),
     (select id from shiro_permission where name='read')
 );
+insert into shiro_permission (name) values ('users:write');
+insert into shiro_permission_role (role_id, permission_id) values (
+    (select id from shiro_role where name='admin'),
+    (select id from shiro_permission where name='users:write')
+);
 
 insert into shiro_user (username, password) values ('guest', '$shiro1$SHA-256$1000$NsTSjKXaRNY7fH4eO5/Jpg==$jSkHapx1HWcOSTr8CFWSwvGqP2jo8P+LhhNU938a7cg='); -- password = guest
 insert into shiro_role (name) values ('reading');

@@ -27,19 +27,24 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         AuthenticationInfo authenticationInfo = super.doGetAuthenticationInfo(currentCredentials);
         if (getCredentialsMatcher().doCredentialsMatch(currentCredentials, authenticationInfo)) {
             String username = ((UsernamePasswordToken) currentCredentials).getUsername();
-            String encryptedNewPassword = ((PasswordMatcher) getCredentialsMatcher()).getPasswordService().encryptPassword(newPassword);
-            try (Connection conn = dataSource.getConnection()) {
-                PreparedStatement statement = conn.prepareStatement("update shiro_user set password = ? where username = ?");
-                statement.setString(1, encryptedNewPassword);
-                statement.setString(2, username);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                handleException(username, e);
-            }
+            updatePasswordWithoutValidation(username, newPassword);
         } else {
             throw new AuthenticationException("Current username and password don't match.");
         }
     }
+
+    public void updatePasswordWithoutValidation(String username, String password) {
+        String encryptedNewPassword = ((PasswordMatcher) getCredentialsMatcher()).getPasswordService().encryptPassword(password);
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("update shiro_user set password = ? where username = ?");
+            statement.setString(1, encryptedNewPassword);
+            statement.setString(2, username);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            handleException(username, e);
+        }
+    }
+
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = ((UsernamePasswordToken) token).getUsername();
