@@ -100,4 +100,8 @@ public class PasswordPolicyEnforcer {
         }
     }
 
+    protected static void setPasswordConfigurationsForTesting(List<ShiroConfiguration> config) {
+        passwordConfigurations = config;
+    }
+
 }
