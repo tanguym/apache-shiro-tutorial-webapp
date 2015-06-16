@@ -22,11 +22,8 @@
         <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
         <c:forEach items="${users}" var="user">
             <tr><td>${user.getUsername()}</td><td>${user.isAccountLocked()}</td><td>${user.needsPasswordChange()}</td><td>
-            <ul class="userRoles">
-            <c:forEach items="${user.getRolesForGui()}" var="role">
-            <li>${role.getName()}</li>
-            </c:forEach>
-            </ul></td></tr>
+                <c:forEach items="${user.getRoles()}" var="role">${role.getName()} </c:forEach>
+            </td></tr>
         </c:forEach>
         </table>
     </shiro:hasPermission>

@@ -1,6 +1,8 @@
 package be.cegeka.shiro.realm;
 
-import be.cegeka.shiro.configuration.ShiroConfiguration;
+import be.cegeka.shiro.realm.validation.AccountLockoutModule;
+import be.cegeka.shiro.realm.validation.PasswordExpirationModule;
+import be.cegeka.shiro.realm.validation.ValidationModule;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.PasswordMatcher;
 import org.slf4j.Logger;
@@ -9,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,18 +51,6 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         } catch (SQLException e) {
             handleException(credentials.getUsername(), e);
         }
-    }
-
-    public boolean userExists(String username) {
-        try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("select count(*) from shiro_user where username= ?");
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            return resultSet.next() && resultSet.getInt(1) > 0;
-        } catch (SQLException e) {
-            handleException(username, e);
-        }
-        return false;
     }
 
     public void updatePasswordWithoutValidation(String username, String password) {
@@ -130,25 +119,6 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
     @Override
     public void setPermissionsQuery(String permissionsQuery) {
         throw new UnsupportedOperationException();
-    }
-
-    public List<ShiroConfiguration> getShiroPasswordConfigurations() {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("select configuration_key, configuration_value from shiro_configuration where configuration_key like 'PASSWORD_%'");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<ShiroConfiguration> shiroConfigs = new ArrayList<>();
-            while (resultSet.next()) {
-                shiroConfigs.add(new ShiroConfiguration(resultSet.getString("configuration_key"), resultSet.getString("configuration_value")));
-            }
-            return shiroConfigs;
-
-        } catch (SQLException e) {
-            final String message = "There was a SQL error while retrieving shiro_password_configurations";
-            if (log.isErrorEnabled()) {
-                log.error(message, e);
-            }
-            throw new AuthenticationException(message, e);
-        }
     }
 
     protected DataSource getDataSource() {

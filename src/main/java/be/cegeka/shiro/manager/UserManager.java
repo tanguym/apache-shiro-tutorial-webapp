@@ -5,30 +5,41 @@ import be.cegeka.shiro.realm.RealmLocator;
 import be.cegeka.shiro.realm.RoleRepository;
 import be.cegeka.shiro.realm.UserRepository;
 import be.cegeka.shiro.transfer.User;
+import be.cegeka.shiro.validation.PasswordPolicyEnforcer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserManager {
 
-    public static String addUser(String username, String password) {
+    public static List<String> addUser(String username, String password) {
         SecurityUtils.getSubject().checkPermission("users:write");
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        if (realm.userExists(username)) {
-            return "user_exists";
+        if (UserRepository.userExists(username)) {
+            return Arrays.asList("user_exists");
         }
-        //TODO check password
-        realm.createUser(new UsernamePasswordToken(username, password));
-        return null;
+        List<String> errors = PasswordPolicyEnforcer.validatePassword(password, password);
+        if (errors.isEmpty()) {
+            JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
+            realm.createUser(new UsernamePasswordToken(username, password));
+            return new ArrayList<>();
+        } else {
+            return errors;
+        }
     }
 
-    public static String changePassword(String username, String newPassword) {
+    public static List<String> changePassword(String username, String newPassword) { //TODO change to 2 passwords
         SecurityUtils.getSubject().checkPermission("users:write");
-        //TODO check password
-        JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
-        realm.updatePasswordWithoutValidation(username, newPassword);
-        return null;
+        List<String> errors = PasswordPolicyEnforcer.validatePassword(newPassword, newPassword);
+        if (errors.isEmpty()) {
+            JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
+            realm.updatePasswordWithoutValidation(username, newPassword);
+            return new ArrayList<>();
+        } else {
+            return errors;
+        }
     }
 
     public static String unlockAccount(String username) {
