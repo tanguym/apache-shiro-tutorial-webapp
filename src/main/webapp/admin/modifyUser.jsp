@@ -18,7 +18,14 @@
 
     <shiro:hasPermission name="users:write">
     <form action="userModification" method="POST">
-        <p>Username : <input type = "text" name="username"/></p>
+        <p>Username :
+        <select name="item">
+        <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
+        <c:forEach items="${users}" var="user">
+            <option value="${user.getUsername()}">${user.getUsername()}</option>
+        </c:forEach>
+        </select>
+        </p>
         <p>Password : <input type = "password" name="password"/></p>
         <p style="width:200px;">
             <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Update password"/>

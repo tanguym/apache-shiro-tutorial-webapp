@@ -1,5 +1,6 @@
 package be.cegeka.shiro.realm;
 
+import be.cegeka.shiro.transfer.User;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExpiredCredentialsException;
 
@@ -33,5 +34,9 @@ public class AccountLockoutModule implements ValidationModule {
         PreparedStatement preparedStatement = connection.prepareStatement("update shiro_user set invalid_login_attempts = 0 where username = ?");
         preparedStatement.setString(1, username);
         preparedStatement.executeUpdate();
+    }
+
+    public static boolean isUserLocked(User user) {
+        return user.getInvalidLoginAttempts()>MAX_RETRIES;
     }
 }
