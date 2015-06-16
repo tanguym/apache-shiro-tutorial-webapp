@@ -1,10 +1,13 @@
 .message {
     background-color: #99FF99;
     color: #006600;
-    margin-bottom: 20px;
 }
 .error {
     background-color: #FF9999;
     color: #660000;
-    margin-bottom: 20px;
+}
+
+.message, .error {
+  padding: 5px 10px;
+  margin-bottom: 20px;
 }
