@@ -1,5 +1,5 @@
-apache-shiro-webapp-tutorial
-============================
+apache-shiro-enhanced
+=====================
 
 This is based on the step-by-step tutorial showing how to secure a web app with Apache Shiro
 We added some functionality to it like:
