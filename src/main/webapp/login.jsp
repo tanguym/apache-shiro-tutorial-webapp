@@ -25,6 +25,7 @@
 </head>
 <body>
     <jsp:include page="include/messages.jsp"/>
+    <p style="margin:20px;"><a href="/">Return to homepage</a></p>
     <div class="container" style="margin-top:50px;">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
