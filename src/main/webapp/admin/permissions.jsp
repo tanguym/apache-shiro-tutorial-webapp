@@ -15,14 +15,14 @@
 </head>
 <body>
 
-<jsp:include page="messages.jsp"/>
+<jsp:include page="../include/messages.jsp"/>
 
 <%
     request.setAttribute("permissions", be.cegeka.shiro.manager.PermissionManager.getPermissions());
 %>
 
 <h1>Permissions</h1>
-    <shiro:hasPermission name="users:read">
+    <shiro:hasPermission name="permissions:read">
     <table>
         <tr><th>Permission</th></tr>
             <c:forEach items="${permissions}" var="permissionItem">
@@ -30,7 +30,7 @@
             </c:forEach>
     </table>
     </shiro:hasPermission>
-    <shiro:lacksPermission name="users:read">
+    <shiro:lacksPermission name="permissions:read">
         You are not allowed to read permissions.
     </shiro:lacksPermission>
 

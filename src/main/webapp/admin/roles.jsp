@@ -22,7 +22,7 @@
 %>
 
 <h1>Roles</h1>
-    <shiro:hasPermission name="users:read">
+    <shiro:hasPermission name="roles:read">
     <table>
         <tr><th>Role</th><th>Permissions</th></tr>
             <c:forEach items="${roles}" var="roleItem">
@@ -35,7 +35,7 @@
             </c:forEach>
     </table>
     </shiro:hasPermission>
-    <shiro:lacksPermission name="users:read">
+    <shiro:lacksPermission name="roles:read">
         You are not allowed to read roles.
     </shiro:lacksPermission>
 

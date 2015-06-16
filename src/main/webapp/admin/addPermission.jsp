@@ -13,18 +13,18 @@
     </style>
 </head>
 <body>
-    <jsp:include page="messages.jsp"/>
+    <jsp:include page="../include/messages.jsp"/>
 
     <h1>Add Role</h1>
 
-    <shiro:hasPermission name="users:write">
+    <shiro:hasPermission name="permissions:write">
     <form action="permissionCreation" method="POST">
         <p>Name : <input type = "text" name="permissionName"/></p>
             <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Create permission"/>
         </p>
     </form>
     </shiro:hasPermission>
-    <shiro:lacksPermission name="users:write">
+    <shiro:lacksPermission name="permissions:write">
         You are not allowed to modify permissions.
     </shiro:lacksPermission>
 
