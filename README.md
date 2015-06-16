@@ -1,7 +1,7 @@
 apache-shiro-enhanced
 =====================
 
-This is based on the step-by-step tutorial showing how to secure a web app with Apache Shiro
+This is based on the step-by-step tutorial showing how to secure a web app with Apache Shiro<br>
 We added some functionality to it like:
 
 database schema
