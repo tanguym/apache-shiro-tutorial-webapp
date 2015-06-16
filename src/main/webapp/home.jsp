@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="static/css/style.css">
     <style>
         body{padding:0 20px;}
+        p{margin:0px;}
     </style>
 </head>
 <body>
@@ -48,6 +49,17 @@
     <shiro:hasPermission name="users:write">
         <a href="admin/index.jsp">Go to the admin panel</a>
     </shiro:hasPermission>
+
+    <h2>What did we add to Shiro?</h2>
+    database schema<br>
+    user, role en permission management for admins<br>
+    change password functionality<br>
+    account lockout on too many logins<br>
+    audit loging on login<br>
+    session timeout (configuration)<br>
+    password encryption (configuration)<br>
+    password expiration<br>
+    password policies<br>
 
     <h2>Roles</h2>
 
