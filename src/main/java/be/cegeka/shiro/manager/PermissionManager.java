@@ -1,6 +1,7 @@
 package be.cegeka.shiro.manager;
 
 import be.cegeka.shiro.realm.PermissionRepository;
+import be.cegeka.shiro.realm.RoleRepository;
 import be.cegeka.shiro.transfer.Permission;
 import be.cegeka.shiro.transfer.Role;
 import org.apache.shiro.SecurityUtils;
@@ -26,4 +27,8 @@ public class PermissionManager {
         return PermissionRepository.getPermissionsForRole(role);
     }
 
+    public static void deletePermission(String name) {
+        SecurityUtils.getSubject().checkPermission("permissions:write");
+        PermissionRepository.deletePermission(name);
+    }
 }

@@ -67,4 +67,22 @@ public class PermissionRepository {
 
         return permissions;
     }
+
+    public static void deletePermission(String name) {
+        try (Connection conn = getRealm().getDataSource().getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("delete from shiro_permission_role where permission_id = (select id from shiro_permission where name = ?)");
+            statement.setString(1, name);
+            statement.executeUpdate();
+
+            statement = conn.prepareStatement("delete from shiro_permission where name = ?");
+            statement.setString(1, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static JdbcCustomizedRealm getRealm() {
+        return RealmLocator.locate(JdbcCustomizedRealm.class);
+    }
 }

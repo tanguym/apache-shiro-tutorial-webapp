@@ -25,9 +25,9 @@
 <h1>Permissions</h1>
     <shiro:hasPermission name="permissions:read">
     <table>
-        <tr><th>Permission</th></tr>
+        <tr><th>Permission</th><th>Actions</th></tr>
             <c:forEach items="${permissions}" var="permissionItem">
-                <tr><td><c:out value="${permissionItem.getName()}"/></td></tr>
+                <tr><td><c:out value="${permissionItem.getName()}"/></td><td><a href="permissionDeletion?name=${permissionItem.getName()}">Delete permission</a></td></tr>
             </c:forEach>
     </table>
     </shiro:hasPermission>
