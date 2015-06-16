@@ -21,7 +21,7 @@ public class AccountLockoutModule implements ValidationModule {
         if (resultSet.next()) {
             int amountOfRetries = resultSet.getInt(1);
             if (amountOfRetries>MAX_RETRIES) {
-                throw new ExpiredCredentialsException("You have entered a wrong password "+ MAX_RETRIES+ " times in a row. The account is locked.");
+                throw new ExpiredCredentialsException("error.too.many.wrong.attempts");
             }
         }
         PreparedStatement updateTriesStatement = connection.prepareStatement("update shiro_user set invalid_login_attempts = invalid_login_attempts+1 where username = ?");
@@ -38,5 +38,10 @@ public class AccountLockoutModule implements ValidationModule {
 
     public static boolean isUserLocked(User user) {
         return user.getInvalidLoginAttempts()>MAX_RETRIES;
+    }
+
+    @Override
+    public String getName() {
+        return getClass().getSimpleName();
     }
 }

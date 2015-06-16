@@ -12,6 +12,7 @@ import java.sql.SQLException;
 public class PasswordExpirationModule implements ValidationModule {
 
     public static final int PASSWORD_EXPIRATION_TIME_IN_DAYS = 30;
+    public static final String ERROR_PASSWORD_EXPIRED = "error.password.expired";
 
     public void validate(String username, Connection connection) throws SQLException, AuthenticationException {
         PreparedStatement preparedStatement = connection.prepareStatement("select last_password_change from shiro_user where username = ?");
@@ -20,7 +21,7 @@ public class PasswordExpirationModule implements ValidationModule {
         if (resultSet.next()) {
             DateTime lastChange = new DateTime(resultSet.getDate(1));
             if (isPasswordExpired(lastChange)) {
-                throw new ExpiredCredentialsException("You haven't changed your password in the past " + PASSWORD_EXPIRATION_TIME_IN_DAYS + " days, please change it.");
+                throw new ExpiredCredentialsException(ERROR_PASSWORD_EXPIRED);
             }
         }
     }
@@ -32,5 +33,10 @@ public class PasswordExpirationModule implements ValidationModule {
     @Override
     public void reset(String username, Connection connection) throws SQLException {
         // do nothing
+    }
+
+    @Override
+    public String getName() {
+        return getClass().getSimpleName();
     }
 }

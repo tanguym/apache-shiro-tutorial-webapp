@@ -43,7 +43,6 @@ public class UserManager {
     }
 
     public static List<String> changePassword(String username, String newPassword, String passwordVerification, String oldPassword) {
-        SecurityUtils.getSubject().checkPermission("users:write");
         List<String> errors = PasswordPolicyEnforcer.validatePassword(newPassword, passwordVerification);
         if (errors.isEmpty()) {
             JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
