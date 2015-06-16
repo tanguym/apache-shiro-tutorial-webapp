@@ -27,4 +27,9 @@ public class Permission {
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

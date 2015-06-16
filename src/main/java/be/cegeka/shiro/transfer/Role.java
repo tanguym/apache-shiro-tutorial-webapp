@@ -35,4 +35,13 @@ public class Role {
     public int hashCode() {
         return name.hashCode();
     }
+
+    public String getPermissionsForGUI() {
+        StringBuilder builder = new StringBuilder();
+        for (Permission permission : permissions) {
+            builder.append(permission.toString() + ", ");
+        }
+        String buildedString = builder.toString();
+        return buildedString.substring(0, buildedString.length()-2);
+    }
 }

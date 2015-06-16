@@ -5,9 +5,17 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../static/css/style.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+      <script>
+      $(function() {
+        $(".roleTooltip").tooltip();
+      });
+      </script>
     <style>
         body{padding:0 20px;}
     </style>
@@ -23,7 +31,7 @@
         <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
         <c:forEach items="${users}" var="user">
             <tr><td>${user.getUsername()}</td><td>${user.isAccountLocked()}</td><td>${user.needsPasswordChange()}</td><td>
-                <c:forEach items="${user.getRoles()}" var="role">${role.getName()} </c:forEach>
+                <c:forEach items="${user.getRoles()}" var="role"><span class="roleTooltip" title="This role has following permissions : ${role.getPermissionsForGUI()}">${role.getName()}</span> </c:forEach>
             </td><td><a href="modifyUser.jsp?user=${user.getUsername()}">modify user</a><br><a href="userDeletion?username=${user.getUsername()}">delete user</a><br></td></tr>
         </c:forEach>
         </table>
