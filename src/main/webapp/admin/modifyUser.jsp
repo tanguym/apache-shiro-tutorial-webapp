@@ -17,9 +17,12 @@
 
     <shiro:hasPermission name="users:write">
     <form action="userModification" method="POST">
-        <p>Username : <input type = "text" value="Username" name="username"/></p>
+        <p>Username : <input type = "text" name="username"/></p>
         <p>Password : <input type = "password" name="password"/></p>
-        <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" value="Submit"/></p>
+        <p style="width:200px;">
+            <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Update password"/>
+            <input class="btn btn-lg btn-success btn-block" type="submit" name="action" value="Unlock account"/>
+        </p>
     </form>
     </shiro:hasPermission>
     <shiro:lacksPermission name="users:write">

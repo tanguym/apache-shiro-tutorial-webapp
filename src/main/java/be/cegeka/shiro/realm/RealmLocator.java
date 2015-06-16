@@ -8,7 +8,7 @@ public class RealmLocator {
 
     public static <T> T locate(Class<T> clazz) {
         for (Realm realm : ((RealmSecurityManager) SecurityUtils.getSecurityManager()).getRealms()) {
-            if (realm.getName().contains(clazz.getName())) {
+            if (realm.getClass().equals(clazz)) {
                 return (T) realm;
             }
         }

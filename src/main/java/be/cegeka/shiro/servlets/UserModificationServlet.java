@@ -20,9 +20,11 @@ public class UserModificationServlet extends HttpServlet {
         currentUser.checkPermission("users:write");
         JdbcCustomizedRealm realm = RealmLocator.locate(JdbcCustomizedRealm.class);
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        realm.updatePasswordWithoutValidation(username, password);
+        if ("Update password".equals(request.getParameter("action"))) {
+            realm.updatePasswordWithoutValidation(request.getParameter("username"), request.getParameter("password"));
+        } else if ("Unlock account".equals(request.getParameter("action"))) {
+            realm.resetModuleLocks(request.getParameter("username"));
+        }
+        //TODO redirect
     }
 }

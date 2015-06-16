@@ -52,6 +52,10 @@
     <shiro:notAuthenticated><p>If you want to access the authenticated-only <a href="<c:url value="/account"/>">account page</a>,
         you will need to log-in first.</p></shiro:notAuthenticated>
 
+    <shiro:hasPermission name="users:write">
+        <a href="admin/index.jsp">Go to the admin panel</a>
+    </shiro:hasPermission>
+
     <h2>Roles</h2>
 
     <p>Here are the roles you have and don't have. Log out and log back in under different user

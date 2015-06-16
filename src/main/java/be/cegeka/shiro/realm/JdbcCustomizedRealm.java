@@ -36,7 +36,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
     public void updatePasswordWithoutValidation(String username, String password) {
         String encryptedNewPassword = ((PasswordMatcher) getCredentialsMatcher()).getPasswordService().encryptPassword(password);
         try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("update shiro_user set password = ? where username = ?");
+            PreparedStatement statement = conn.prepareStatement("update shiro_user set password = ?, last_password_change = CURRENT_TIMESTAMP where username = ?");
             statement.setString(1, encryptedNewPassword);
             statement.setString(2, username);
             statement.executeUpdate();
@@ -44,7 +44,6 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
             handleException(username, e);
         }
     }
-
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = ((UsernamePasswordToken) token).getUsername();
@@ -54,12 +53,12 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
         validateModules(username);
         AuthenticationInfo authenticationInfo = super.doGetAuthenticationInfo(token);
         if (getCredentialsMatcher().doCredentialsMatch(token, authenticationInfo)) {
-            resetModules(username);
+            resetModuleLocks(username);
         }
         return authenticationInfo;
     }
 
-    private void resetModules(String username) {
+    public void resetModuleLocks(String username) {
         try (Connection conn = dataSource.getConnection()) {
             for (ValidationModule validationModule : validationModules) {
                 validationModule.reset(username, conn);
