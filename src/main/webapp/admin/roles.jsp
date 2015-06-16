@@ -21,6 +21,7 @@
     request.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
 %>
 
+    <p><a href="/admin">Return to admin-page</a></p>
 <h1>Roles</h1>
     <shiro:hasPermission name="roles:read">
     <table>
@@ -34,12 +35,14 @@
                 </td></tr>
             </c:forEach>
     </table>
+
+<p><a class="btn btn-lg btn-success btn-block" href="addRole.jsp">add role</a></p>
     </shiro:hasPermission>
     <shiro:lacksPermission name="roles:read">
         You are not allowed to read roles.
     </shiro:lacksPermission>
 
-<a href="addRole.jsp">add role</a><br>
+
 
 </body>
 </html>

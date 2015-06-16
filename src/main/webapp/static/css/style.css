@@ -19,3 +19,8 @@
 .userRoles li {
     display: inline;
 }
+
+.btn {
+    width : 200px;
+    margin: 20px;
+}

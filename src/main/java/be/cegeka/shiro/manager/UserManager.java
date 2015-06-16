@@ -75,4 +75,16 @@ public class UserManager {
 
         return users;
     }
+
+    public static User getUser(String username) {
+        SecurityUtils.getSubject().checkPermission("users:write");
+        User user = UserRepository.getUser(username);
+        user.setRoles(RoleManager.getRolesForUser(user));
+        return user;
+    }
+
+    public static void updateRolesForUser(String username, String[] assignedRoles) {
+        SecurityUtils.getSubject().checkPermission("users:write");
+        UserRepository.updateRolesForUser(username, assignedRoles);
+    }
 }
