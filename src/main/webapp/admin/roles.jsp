@@ -4,35 +4,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Admin pages</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="../static/css/style.css">
-    <style>
-        body{padding:0 20px;}
-    </style>
+        <style>
+            body{padding:0 20px;}
+        </style>
 </head>
 <body>
-    <jsp:include page="messages.jsp"/>
-    <h1>Users</h1>
 
+<jsp:include page="messages.jsp"/>
+
+<%
+    request.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
+%>
+
+<h1>Roles</h1>
     <shiro:hasPermission name="users:read">
-        <table>
-        <tr><th>User</th><th>Locked</th><th>Expired</th><th>Roles</th></tr>
-        <% request.setAttribute("users",be.cegeka.shiro.manager.UserManager.getUsers()); %>
-        <c:forEach items="${users}" var="user">
-            <tr><td>${user.getUsername()}</td><td>${user.isAccountLocked()}</td><td>${user.needsPasswordChange()}</td><td>
-            <ul class="userRoles">
-            <c:forEach items="${user.getRolesForGui()}" var="role">
-            <li>${role.getName()}</li>
+    <table>
+        <tr><th>Role</th><th>Permissions</th></tr>
+            <c:forEach items="${roles}" var="roleItem">
+                <tr><td><c:out value="${roleItem.getName()}"/></td><td></td></tr>
             </c:forEach>
-            </ul></td></tr>
-        </c:forEach>
-        </table>
+    </table>
     </shiro:hasPermission>
     <shiro:lacksPermission name="users:read">
-        You are not allowed to read users.
+        You are not allowed to read roles.
     </shiro:lacksPermission>
+
+<a href="addRole.jsp">add role</a><br>
 
 </body>
 </html>

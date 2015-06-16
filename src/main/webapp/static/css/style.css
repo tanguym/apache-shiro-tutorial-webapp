@@ -11,3 +11,11 @@
   padding: 5px 10px;
   margin-bottom: 20px;
 }
+
+.userRoles {
+    list-style-type: none;
+}
+
+.userRoles li {
+    display: inline;
+}

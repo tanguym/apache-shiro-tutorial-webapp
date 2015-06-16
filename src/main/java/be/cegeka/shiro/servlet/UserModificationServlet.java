@@ -1,5 +1,5 @@
 
-package be.cegeka.shiro.servlets;
+package be.cegeka.shiro.servlet;
 
 import be.cegeka.shiro.manager.UserManager;
 
