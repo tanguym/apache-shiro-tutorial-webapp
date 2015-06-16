@@ -47,6 +47,7 @@ create table shiro_auditlog (
    id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(40) NOT NULL,
    event VARCHAR(256) NOT NULL,
+   ip VARCHAR(64) NOT NULL,
    timestamp datetime DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY ( id )
 );
