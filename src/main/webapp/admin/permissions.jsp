@@ -18,28 +18,23 @@
 <jsp:include page="messages.jsp"/>
 
 <%
-    request.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
+    request.setAttribute("permissions", be.cegeka.shiro.manager.PermissionManager.getPermissions());
 %>
 
-<h1>Roles</h1>
+<h1>Permissions</h1>
     <shiro:hasPermission name="users:read">
     <table>
-        <tr><th>Role</th><th>Permissions</th></tr>
-            <c:forEach items="${roles}" var="roleItem">
-                <tr><td><c:out value="${roleItem.getName()}"/></td>
-                <td>
-                    <c:forEach items="${roleItem.getPermissions()}" var="permissionItem">
-                        ${permissionItem.getName()}
-                    </c:forEach>
-                </td></tr>
+        <tr><th>Permission</th></tr>
+            <c:forEach items="${permissions}" var="permissionItem">
+                <tr><td><c:out value="${permissionItem.getName()}"/></td></tr>
             </c:forEach>
     </table>
     </shiro:hasPermission>
     <shiro:lacksPermission name="users:read">
-        You are not allowed to read roles.
+        You are not allowed to read permissions.
     </shiro:lacksPermission>
 
-<a href="addRole.jsp">add role</a><br>
+<a href="addPermission.jsp">add permission</a><br>
 
 </body>
 </html>

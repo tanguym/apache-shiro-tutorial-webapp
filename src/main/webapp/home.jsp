@@ -62,8 +62,12 @@
     <h3>Roles you DON'T have:</h3>
 
     <p>
-        <shiro:lacksRole name="admin">admin<br/></shiro:lacksRole>
-        <shiro:lacksRole name="reading">reading<br/></shiro:lacksRole>
+    <%
+        pageContext.setAttribute("roles", be.cegeka.shiro.manager.RoleManager.getRoles());
+    %>
+        <c:forEach items="${roles}" var="role">
+            <shiro:lacksRole name="${role.getName()}">${role.getName()}<br/></shiro:lacksRole>
+        </c:forEach>
     </p>
 
     <shiro:hasPermission name="read">WOOT it works</shiro:hasPermission>

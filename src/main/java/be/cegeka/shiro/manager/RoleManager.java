@@ -1,6 +1,7 @@
 package be.cegeka.shiro.manager;
 
 import be.cegeka.shiro.realm.JdbcCustomizedRealm;
+import be.cegeka.shiro.realm.PermissionRepository;
 import be.cegeka.shiro.realm.RealmLocator;
 import be.cegeka.shiro.realm.RoleRepository;
 import be.cegeka.shiro.transfer.Role;
@@ -22,12 +23,21 @@ public class RoleManager {
     }
 
     public static List<Role> getRoles() {
-        SecurityUtils.getSubject().checkPermission("users:write");
-        return RoleRepository.getRoles();
+        List<Role> roles = RoleRepository.getRoles();
+        setPermissionsForRoles(roles);
+        return roles;
+    }
+
+    private static void setPermissionsForRoles(List<Role> roles) {
+        for (Role role : roles) {
+            role.setPermissions(PermissionRepository.getPermissionsForRole(role));
+        }
     }
 
     public static List<Role> getRolesForUser(User user) {
-        return RoleRepository.getRolesForUser(user);
+        List<Role> roles = RoleRepository.getRolesForUser(user);
+        setPermissionsForRoles(roles);
+        return roles;
     }
 
 }

@@ -43,7 +43,7 @@ public class UserManager {
         List<User> users = UserRepository.getUsers();
 
         for (User user : users) {
-            user.setRoles(RoleRepository.getRolesForUser(user));
+            user.setRoles(RoleManager.getRolesForUser(user));
         }
 
         return users;
