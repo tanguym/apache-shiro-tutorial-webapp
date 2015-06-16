@@ -36,6 +36,7 @@
     <p>You are currently logged in.</p>
 
     <p><a href="<c:url value="/home.jsp"/>">Return to the home page.</a></p>
+    <p><a href="<c:url value="changepassword.jsp"/>">Change your password.</a></p>
 
     <p><a href="<c:url value="/logout"/>">Log out.</a></p>
 

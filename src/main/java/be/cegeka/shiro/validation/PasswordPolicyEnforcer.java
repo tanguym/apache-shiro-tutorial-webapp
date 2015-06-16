@@ -41,7 +41,7 @@ public class PasswordPolicyEnforcer {
 
     private static void checkPasswordOnValidCharacter(String password, List<String> errors) {
         String validCharacterRegex = getValidCharacterRegex();
-        if (!password.matches(validCharacterRegex)) {
+        if (!password.toUpperCase().matches(validCharacterRegex)) {
             errors.add("error.not.valid");
         }
     }

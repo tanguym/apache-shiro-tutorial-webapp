@@ -39,7 +39,7 @@ create table shiro_permission_role (
 );
 create table shiro_configuration (
    id INT NOT NULL AUTO_INCREMENT,
-   parameter_key VARCHAR(255) NOT NULL,
-   parameter_value VARCHAR(255) NOT NULL,
+   configuration_key VARCHAR(255) NOT NULL,
+   configuration_value VARCHAR(255) NOT NULL,
    PRIMARY KEY ( id )
 );

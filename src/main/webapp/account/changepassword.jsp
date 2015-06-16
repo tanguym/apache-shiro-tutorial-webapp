@@ -1,6 +1,6 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="include.jsp"/>
+<jsp:include page="../include.jsp"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,14 +13,16 @@
 </head>
 <body>
     <% request.setAttribute("error", request.getParameter("error")); %>
-    <h1>Forgotten password</h1>
+    <h1>Change your password</h1>
+    <p><a href="<c:url value="../account"/>">Return to the account page.</a></p>
 
-    <p>Welcome to the forgotten password page.</p>
+    <p>Welcome to the change password page.</p>
 
-    <p>Enter your username and password below to change your password.</p>
-    <form action="ForgotMyPassword" method="POST">
-        <p>Username : <input type = "text" value="Username" name="username"/></p>
-        <p>Password : <input type = "password" name="password"/></p>
+    <p>Enter your current password and new password below to change your password.</p>
+    <form action="/account/ChangeMyPassword" method="POST">
+        <p>Your current password : <input type = "password" name="old_password"/></p>
+        <p>New password : <input type = "password" name="password"/></p>
+        <p>Re-enter your new password : <input type = "password" name="confirm_password"/></p>
         <p style="width:200px;"><input class="btn btn-lg btn-success btn-block" type="submit" value="Send!"/></p>
     </form>
 

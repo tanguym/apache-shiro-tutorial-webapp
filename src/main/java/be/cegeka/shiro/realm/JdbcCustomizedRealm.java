@@ -35,7 +35,7 @@ public class JdbcCustomizedRealm extends org.apache.shiro.realm.jdbc.JdbcRealm {
             String username = currentCredentials.getUsername();
             updatePasswordWithoutValidation(username, newPassword);
         } else {
-            throw new AuthenticationException("Current username and password don't match.");
+            throw new AuthenticationException("error.username.password.not.matching");
         }
     }
 
